@@ -1,0 +1,133 @@
+{\rtf1\ansi\ansicpg936\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 apiVersion: apps/v1\
+kind: Deployment\
+metadata:\
+  name: test\
+  namespace: test\
+  selfLink: /apis/apps/v1/namespaces/test/deployments/test\
+  uid: 5372fa95-7af2-11ea-a3f0-fa163e93212a\
+  resourceVersion: '4021519'\
+  generation: 2\
+  creationTimestamp: '2020-04-10T06:12:58Z'\
+  labels:\
+    app: test\
+    name: test\
+    system/appName: test\
+    system/svcName: test\
+  annotations:\
+    deployment.kubernetes.io/revision: '1'\
+    sidecar.istio.io/inject: 'false'\
+spec:\
+  replicas: 2\
+  selector:\
+    matchLabels:\
+      name: test\
+  template:\
+    metadata:\
+      creationTimestamp: null\
+      labels:\
+        app: test\
+        name: test\
+        system/appName: test\
+        system/svcName: test\
+      annotations:\
+        cni.projectcalico.org/ipv4pools: '["172.31.0.0/16"]'\
+        imagetag_arch: amd64\
+        imagetag_os: linux\
+        sidecar.istio.io/inject: 'false'\
+        system/registry: ''\
+        useReadinessConfig: 'true'\
+    spec:\
+      containers:\
+        - name: test\
+          image: '192.168.0.3/system_containers/tomcat:8.0.53'\
+          ports:\
+            - containerPort: 8080\
+              protocol: TCP\
+          resources:\
+            limits:\
+              cpu: '1'\
+              memory: 512Mi\
+            requests:\
+              cpu: 200m\
+              memory: 512Mi\
+          terminationMessagePath: /dev/termination-log\
+          terminationMessagePolicy: File\
+          imagePullPolicy: Always\
+          securityContext:\
+            privileged: false\
+            procMount: Default\
+      restartPolicy: Always\
+      terminationGracePeriodSeconds: 30\
+      dnsPolicy: ClusterFirst\
+      nodeSelector:\
+        beta.kubernetes.io/os: linux\
+      serviceAccountName: default\
+      serviceAccount: default\
+      securityContext: \{\}\
+      imagePullSecrets:\
+        - name: user-1-registrysecret\
+      affinity:\
+        nodeAffinity: \{\}\
+      schedulerName: default-scheduler\
+  strategy:\
+    type: Recreate\
+  minReadySeconds: 10\
+  revisionHistoryLimit: 10\
+  progressDeadlineSeconds: 600\
+status:\
+  observedGeneration: 2\
+  replicas: 2\
+  updatedReplicas: 2\
+  readyReplicas: 2\
+  availableReplicas: 2\
+  conditions:\
+    - type: Progressing\
+      status: 'True'\
+      lastUpdateTime: '2020-04-10T06:13:10Z'\
+      lastTransitionTime: '2020-04-10T06:12:58Z'\
+      reason: NewReplicaSetAvailable\
+      message: ReplicaSet "test-64874f544c" has successfully progressed.\
+    - type: Available\
+      status: 'True'\
+      lastUpdateTime: '2020-04-18T11:11:31Z'\
+      lastTransitionTime: '2020-04-18T11:11:31Z'\
+      reason: MinimumReplicasAvailable\
+      message: Deployment has minimum availability.\
+---\
+apiVersion: v1\
+kind: Service\
+metadata:\
+  name: test\
+  namespace: test\
+  selfLink: /api/v1/namespaces/test/services/test\
+  uid: 53702472-7af2-11ea-a3f0-fa163e93212a\
+  resourceVersion: '2061308'\
+  creationTimestamp: '2020-04-10T06:12:58Z'\
+  labels:\
+    name: test\
+    system/appName: test\
+    system/svcName: test\
+  annotations:\
+    system/lbgroup: group-ilbdb\
+    system/schemaPortname: tcp-test-0/TCP/10666\
+spec:\
+  ports:\
+    - name: tcp-test-0\
+      protocol: TCP\
+      port: 8080\
+      targetPort: 8080\
+  selector:\
+    name: test\
+  type: ClusterIP\
+  sessionAffinity: None\
+status:\
+  loadBalancer: \{\}\
+serviceMesh: []\
+}
